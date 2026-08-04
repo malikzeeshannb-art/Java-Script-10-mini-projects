@@ -8,10 +8,13 @@ This repository exists as a **consolidation phase** — a bridge between finishi
 
 ## 📁 Repository Structure
 
-Each project lives in its own numbered folder, built and committed independently:
+A single `index.html` at the root acts as the **hub page** for the whole series — it lists every project as a card, links to whichever ones are live, and marks the rest as upcoming. Each individual project still lives in its own numbered folder, built and committed independently:
 
 ```
 Java-Script-10-mini-projects/
+│
+├── index.html          ← hub page (lists & links every project below)
+├── README.md            ← this file
 │
 ├── #1-TO-DO-list/
 │   ├── index.html
@@ -35,11 +38,17 @@ Java-Script-10-mini-projects/
 └── #10-Personal-Dashboard/
 ```
 
-Every folder follows the same pattern:
+Every project folder follows the same pattern:
 - **`index.html`** — page structure
 - **`style.css`** — styling
 - **`script.js`** — application logic
 - **`CONCEPTS.md`** — a written breakdown of every JavaScript/DOM concept used in that specific project, explained in detail for future reference
+
+### Adding a new project to the hub
+
+The root `index.html` builds its cards from a single JavaScript array — the same array + `forEach` pattern used inside the To-Do List project itself. To publish a new project, only one thing needs to change: add one object to that array (title, folder name, status, and concept tags). The card, the link, and the progress bar all update automatically — no HTML needs to be touched by hand.
+
+> ⚠️ **Note on folder names:** every folder uses a leading `#` (e.g. `#2-Calculator`). A `#` has special meaning inside a URL, so the hub page encodes it automatically before building links — this is handled in code and never needs to be done manually.
 
 ---
 
@@ -92,9 +101,9 @@ This structure is intentional — it's not just about finishing 10 projects, but
 
 ## 🔗 Live Projects
 
-- **#1 — To-Do List:** [Live Demo](#) · [Source](./%231-TO-DO-list)
+All projects are browsable from one place: **[open the project hub →](./index.html)**
 
-*(Links will be updated as each project is completed.)*
+The hub page lists every project in the series, links to whichever ones are already built, and marks the rest as upcoming — it updates automatically as new projects are added, so this README doesn't need to be edited every time.
 
 ---
 
