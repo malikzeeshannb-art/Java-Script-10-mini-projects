@@ -20,12 +20,14 @@ Java-Script-10-mini-projects/
 │   ├── index.html
 │   ├── style.css
 │   ├── script.js
+│   ├── README.md
 │   └── CONCEPTS.md
 │
 ├── #2-Calculator/
 │   ├── index.html
 │   ├── style.css
 │   ├── script.js
+│   ├── README.md
 │   └── CONCEPTS.md
 │
 ├── #3-Quiz-App/
@@ -57,7 +59,7 @@ The root `index.html` builds its cards from a single JavaScript array — the sa
 | # | Project | Status |
 |---|---|---|
 | 1 | To-Do List | ✅ Completed |
-| 2 | Calculator | ⏳ Not started |
+| 2 | Calculator | ✅ Completed |
 | 3 | Quiz App | ⏳ Not started |
 | 4 | Registration Form | ⏳ Not started |
 | 5 | Expense Tracker | ⏳ Not started |
