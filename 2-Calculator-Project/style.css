@@ -1,80 +1,100 @@
 :root {
-    --primery: rgb(80, 128, 212);
-    --secondery: rgb(221, 222, 222);
-    --alert: rgb(247, 156, 20);
-    --danger: rgb(220, 49, 15);
+    --primary: rgb(43, 131, 245);
+    --secondary: rgb(247, 165, 66);
+    --bg-body: white;
+    --universal-text-color: black;
+    --bg-btn-hover: rgb(218, 215, 215);
+    --btn-hover-color: black;
+    --operator-btn-hover: rgb(234, 36, 36);
+    --border-color: rgb(215, 211, 211);
+
+    --btn-padding: 1rem;
+    --btn-border-raduse: 6px;
+    --universal-border-raduse: 10px;
 }
-body { 
-    background-color: white;
-    color: black;
+
+body {
+    background-color: var(--bg-body);
+    color: var(--universal-text-color);
+    align-items: center;
 }
-.mainheader {
-    text-align: center;
+
+header {
     display: flex;
     justify-content: center;
+    text-align: center;
 }
-main {
- display: flex;
- justify-content: center;
- flex-direction: column;
- align-items: center;
- margin-top: 20px;
- height: auto;
- width: 100%;
+
+h1 {
+ font-size: xx-large;
 }
-#display {
+
+.main-section {
     display: flex;
-    min-width: 300px;
-    max-width: 400px;
-    height: 50px;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
-    font-size: 1.5rem;
-    padding: 5px;
-    border: 1px solid var(--secondery);
-    border-radius: 10px;
+    flex-direction: column;
+    max-width: 100%;
+    margin-top: 1rem;
+
 }
-.numberGroup {
+#input-section {
+    box-sizing: border-box;
+      min-width: 350px;
+      height: 50px;
+      padding: 5px;
+      border-radius: var(--universal-border-raduse);
+      border: 1px solid var(--border-color);
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      font-size: 1.8rem;
+      
+}
+.number-and-operator-holder {
+    box-sizing: border-box;
     display: grid;
-    min-width: 300px;
-    max-width: 400px;
     grid-template-columns: repeat(4, 1fr);
-    align-items: center;
-    justify-items: center;
-    height: 100%;
+    min-width: 350px;
+    border: 1px solid var(--border-color);
+    height: auto;
     padding: 5px;
-    border: 1px solid var(--secondery);
-    border-radius: 10px;
+    border-radius: var(--universal-border-raduse);
     gap: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    grid-template-rows: 50px;
-}
-#btn1, #btn2, #btn3, #btn4, #btn5, #btn6, #btn7, #btn8, #btn9, #btn0 {
-    width: 100%;
-    height: 50px;
-    font-size: 1.5rem;
+ }
+
+ #btn1, #btn2, #btn3, #btn4, #btn5, #btn6, #btn7, #btn8, #btn9, #btn0 {
+    height: 45px;
+    font-size: x-large;
+    background-color: var(--primary);
     border: none;
-    border-radius: 5px;
-    background-color: var(--primery);
+    border-radius: var(--btn-border-raduse);
     color: white;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-#btnAdd, #btnMinus, #btnMultiply, #btnDivide, #btnEqual, #btnClear {
-    width: 100%;
-    height: 50px;
-    font-size: 1.5rem;
+ }
+  #btn1:hover, #btn2:hover, #btn3:hover, #btn4:hover, #btn5:hover, #btn6:hover, #btn7:hover, #btn8:hover, #btn9:hover, #btn0:hover {
+    background-color: var(--bg-btn-hover);  
+    color: var(--btn-hover-color);
+    
+ }
+
+ #btn-p, #btn-m, #btn-mu, #btn-d, #btn-e, #btn-c {
+    height: 45px;
+    font-size: x-large;
+    background-color: var(--secondary);
     border: none;
-    border-radius: 5px;
-    background-color: var(--alert);
+    border-radius: var(--btn-border-raduse);
     color: white;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-#btnAdd:hover, #btnMinus:hover, #btnMultiply:hover, #btnDivide:hover, #btnEqual:hover, #btnClear:hover {
-    background-color: var(--danger);
-}
-#btn1:hover, #btn2:hover, #btn3:hover, #btn4:hover, #btn5:hover, #btn6:hover, #btn7:hover, #btn8:hover, #btn9:hover, #btn0:hover {
-    background-color: var(--secondery);
-    color: black;
-}
+    transition: transform 0.1s ease-in-out 0.1s;
+  
+  /* Optional: tells it to scale from the exact center */
+  transform-origin: center;
+ }
+
+ #btn-p:hover, #btn-m:hover, #btn-mu:hover, #btn-d:hover, #btn-e:hover {
+    background-color: var(--bg-btn-hover);
+    color: var(--btn-hover-color);
+    transform: scale(1.05);
+ }
+  #btn-c:hover {
+    background-color: var(--operator-btn-hover);
+  }
