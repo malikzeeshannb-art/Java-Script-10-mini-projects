@@ -1,54 +1,55 @@
-# Calculator — Vanilla JavaScript Project
+# Vanilla JavaScript Calculator
 
-A functional calculator built entirely with vanilla JavaScript, HTML, and CSS — no frameworks, no external libraries. This is the second project in a 10-project consolidation series, built after completing Day 50 of a structured 70-day JavaScript learning curriculum, using only the concepts covered through that point: variables, functions, conditionals, DOM manipulation, and event listeners.
+A basic calculator built using **only vanilla JavaScript** — no frameworks, no libraries. This is the second project in a 10-project consolidation series, built strictly using concepts covered in Days 1–50 of a structured JavaScript curriculum: variables, functions, parameters, conditionals, DOM selection, and event listeners.
 
 ## Features
 
-- Digit input (0–9) with correct leading-zero handling
-- Four basic operators: addition, subtraction, multiplication, division
-- Left-to-right chained calculations (e.g., `4 + 5 × 2` evaluates as `(4 + 5) × 2 = 18`, not standard operator precedence)
-- `=` supports repeated presses and continued chaining after a result (e.g., `5 + 3 = + 2 =` → `10`)
-- `C` performs a full state reset from any point in a calculation, including mid-operation
-- Division-by-zero protection — displays a clear error instead of crashing or showing `Infinity` / `NaN`
+- Digit buttons `0–9`
+- Operators: `+`, `−`, `×`, `÷`
+- `=` (equals) and `C` (clear) buttons
+- Left-to-right chained operations (e.g. `4 + 5 × 2` evaluates as `(4 + 5) × 2 = 18`, not standard order of operations)
+- Divide-by-zero handling — displays `"Error"` instead of crashing or showing `NaN`/`Infinity`
+- Leading-zero prevention on digit entry
+- Full state reset on `C`, with no leftover values from the previous calculation
 
-## Tech Stack
+## How It Works — State Model
 
-- HTML5
-- CSS3
-- Vanilla JavaScript (arrow functions only — no async/await, closures as a pattern, classes, or modules)
+The calculator is driven by four state variables:
 
-## Project Structure
+| Variable | Purpose |
+|---|---|
+| `currentValue` | What's currently being typed / shown on screen |
+| `previousValue` | The number stored before an operator was pressed |
+| `operatorHolder` | The pending operator (`"p"`, `"m"`, `"mu"`, `"d"`) or `null` |
+| `equal` | A flag tracking whether the last action was pressing `=`, so the next digit press knows whether to start fresh or append |
 
-```
-├── index.html
-├── style.css
-└── script.js
-```
+Every button click reads or updates these variables through one of four core functions: `numberHolder()`, `operator()`, `calculation()`, and `btnEqual()` — each button's `addEventListener` calls the relevant function, passing in its own value.
 
-## How the Calculator Works
+## Project Journey
 
-The core of the calculator is three state variables that track everything happening at any given moment:
+This project was built **twice**, intentionally, as part of a learning process:
 
-- `currentValue` — the number currently being typed or displayed
-- `previousValue` — the number stored before an operator was selected
-- `operatorHolder` — the pending operator, if any
+1. **First build** — Constructed step by step, one function at a time, in a mentorship-style session with Claude AI acting as a senior developer doing code review. Each piece (digit handling, operator handling, calculation, equals, clear) was written, tested, and debugged individually — with bugs pointed out and traced through, not fixed directly, so the reasoning had to be worked out independently.
 
-A fourth variable, `equal`, is a boolean flag that solves one specific problem: after pressing `=`, the next digit typed should start a brand-new number rather than being appended to the previous result. Without this flag, typing `7` right after `5 + 3 =` would incorrectly produce `87` instead of `7`.
+2. **Second build (from memory)** — Once the first version was complete and working, the entire project was deleted and rebuilt from scratch using only the original requirements brief — no reference to the old code. This rebuild took **over a week** and surfaced several of the exact same edge-case bugs from the first pass (notably around "what happens when you press a digit right after `=`" and "chaining an operation after `=`"), which were then debugged and fixed independently, confirming the underlying logic had actually been understood rather than just copied.
 
-Each button click calls one of four functions — a digit handler, an operator handler, a calculation function, or a clear function — and each of those functions reads and updates the shared state variables above rather than managing its own private data.
+## Repository Locations
 
-## Development Story
+- [10 Mini Projects Collection](https://github.com/malikzeeshannb-art/Java-Script-10-mini-projects/tree/main/2-Calculator-Project)
+- [JavaScript Learning Journey](https://github.com/malikzeeshannb-art/my-javascript-learning-journey/tree/main/playground%2Funderstanding-switch%2F2-calculator-part-of-mini-projects)
 
-This project was built in two separate passes, working with Claude AI as a senior-developer-style reviewer rather than a code generator.
+## Files
 
-**First pass:** Built step by step, in small increments — state variables, then the digit-handling function, then wiring it to all ten buttons, then the operator function, then the calculation function, then the trickier edge cases around `=` and `C`. At every step, Claude described the expected outcome and pointed out bugs by walking through variable traces, but never wrote the implementation directly — that part was done independently.
+- `index.html` — markup and button layout
+- `style.css` — styling
+- `script.js` — calculator logic
+- `README.md` — this file
+- `CONCEPTS.md` — breakdown of the core JavaScript concepts demonstrated
 
-**Second pass:** The entire project was deleted and rebuilt from scratch, from memory, using only a short 3–4 point requirements brief with no step-by-step guidance. This rebuild took a little over a week and surfaced several subtle bugs that hadn't fully "stuck" the first time around — particularly around what should happen to the calculator's internal state immediately after pressing `=`. Tracking these down required manually tracing the value of every state variable through each button press in sequence, which is ultimately what made the underlying logic click.
+## How to Run
 
-## Key Concepts Practiced
+Clone or download the repository and open `index.html` in any browser. No build step or dependencies required.
 
-See [CONCEPTS.md](./CONCEPTS.md) for a full breakdown of the JavaScript and DOM concepts this project reinforces.
+## Author
 
-## Running the Project
-
-Clone the repo and open `index.html` in any browser — no build step, no dependencies, no installation required.
+Built by [malikzeeshannb-art](https://github.com/malikzeeshannb-art) as part of an ongoing front-end development learning journey.
