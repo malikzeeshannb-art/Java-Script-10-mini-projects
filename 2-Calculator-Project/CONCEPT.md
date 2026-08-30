@@ -1,54 +1,58 @@
-# Calculator — Vanilla JavaScript Project
+# Core JavaScript Concepts Used in This Project
 
-A functional calculator built entirely with vanilla JavaScript, HTML, and CSS — no frameworks, no external libraries. This is the second project in a 10-project consolidation series, built after completing Day 50 of a structured 70-day JavaScript learning curriculum, using only the concepts covered through that point: variables, functions, conditionals, DOM manipulation, and event listeners.
+A reference breakdown of the main concepts this calculator demonstrates — useful for revisiting later, or for anyone browsing the repo who wants to understand the reasoning behind the code, not just the code itself.
 
-## Features
+## 1. Variables as Shared State
 
-- Digit input (0–9) with correct leading-zero handling
-- Four basic operators: addition, subtraction, multiplication, division
-- Left-to-right chained calculations (e.g., `4 + 5 × 2` evaluates as `(4 + 5) × 2 = 18`, not standard operator precedence)
-- `=` supports repeated presses and continued chaining after a result (e.g., `5 + 3 = + 2 =` → `10`)
-- `C` performs a full state reset from any point in a calculation, including mid-operation
-- Division-by-zero protection — displays a clear error instead of crashing or showing `Infinity` / `NaN`
+Four variables (`currentValue`, `previousValue`, `operatorHolder`, `equal`) declared once, outside any function, act as the calculator's "memory." Every function reads and writes to this shared state rather than each function tracking its own private data. This is the core pattern behind the whole project: a small number of variables, updated consistently, drive all the behavior.
 
-## Tech Stack
+## 2. Functions & Parameters (Reuse Over Repetition)
 
-- HTML5
-- CSS3
-- Vanilla JavaScript (arrow functions only — no async/await, closures as a pattern, classes, or modules)
+Instead of writing separate logic for each of the 10 digit buttons, one function (`numberHolder(num)`) is written once and reused ten times, with each button passing in its own digit as an argument. The same pattern applies to the four operator buttons calling `operator(opr)`. This is the difference between a parameter (a placeholder that receives a different value each call) and hardcoding a specific value inside the function body.
 
-## Project Structure
+## 3. Conditionals (`if` / `else if`)
 
-```
-├── index.html
-├── style.css
-└── script.js
-```
+Used throughout to branch behavior based on state:
+- Deciding whether to replace or append a digit (`numberHolder`)
+- Deciding whether a calculation needs to run before a new operator is stored (`operator`)
+- Selecting which arithmetic operation to perform (`calculation`)
+- Guarding against division by zero before doing the actual division
 
-## How the Calculator Works
+## 4. DOM Selection
 
-The core of the calculator is three state variables that track everything happening at any given moment:
+`document.getElementById()` is used to grab a reference to the display and every button once, at the top of the script, storing each in a variable for reuse — rather than querying the DOM repeatedly inside event handlers.
 
-- `currentValue` — the number currently being typed or displayed
-- `previousValue` — the number stored before an operator was selected
-- `operatorHolder` — the pending operator, if any
+## 5. Event Listeners
 
-A fourth variable, `equal`, is a boolean flag that solves one specific problem: after pressing `=`, the next digit typed should start a brand-new number rather than being appended to the previous result. Without this flag, typing `7` right after `5 + 3 =` would incorrectly produce `87` instead of `7`.
+`addEventListener("click", callback)` connects each button to a specific function call. The callback is typically a small arrow function whose only job is to call the real logic function with the right argument — keeping the "what happens" (the named functions) separate from the "when it happens" (the listeners).
 
-Each button click calls one of four functions — a digit handler, an operator handler, a calculation function, or a clear function — and each of those functions reads and updates the shared state variables above rather than managing its own private data.
+## 6. Type Conversion — `Number()` and `String()`
 
-## Development Story
+The display works with strings (so digits can be concatenated as text), but arithmetic requires numbers. `Number(currentValue)` converts the string for calculation, and `String(result)` converts the numeric result back for display and further digit-building. Mixing these up — e.g. comparing a string `"0"` to the number `0`, or using `+` on two strings expecting math — was the source of several early bugs.
 
-This project was built in two separate passes, working with Claude AI as a senior-developer-style reviewer rather than a code generator.
+## 7. String Concatenation vs. Numeric Addition
 
-**First pass:** Built step by step, in small increments — state variables, then the digit-handling function, then wiring it to all ten buttons, then the operator function, then the calculation function, then the trickier edge cases around `=` and `C`. At every step, Claude described the expected outcome and pointed out bugs by walking through variable traces, but never wrote the implementation directly — that part was done independently.
+`currentValue + num` inside `numberHolder` is **text concatenation**, building the visible number one character at a time (`"5" + "3"` → `"53"`). `Number(previousValue) + Number(currentValue)` inside `calculation()` is **real addition**. Both use the `+` operator, but do completely different things depending on the types involved — a key JavaScript gotcha this project runs into directly.
 
-**Second pass:** The entire project was deleted and rebuilt from scratch, from memory, using only a short 3–4 point requirements brief with no step-by-step guidance. This rebuild took a little over a week and surfaced several subtle bugs that hadn't fully "stuck" the first time around — particularly around what should happen to the calculator's internal state immediately after pressing `=`. Tracking these down required manually tracing the value of every state variable through each button press in sequence, which is ultimately what made the underlying logic click.
+## 8. Boolean Flags for Cross-Function Signaling
 
-## Key Concepts Practiced
+The `equal` flag doesn't hold a value used in calculation — it holds a signal: "the last action was pressing `=`." `btnEqual()` sets it to `true`; `numberHolder()` checks it to decide whether the next digit should start a fresh number or append to the previous result. This is a common pattern for coordinating behavior across functions that don't call each other directly.
 
-See [CONCEPTS.md](./CONCEPTS.md) for a full breakdown of the JavaScript and DOM concepts this project reinforces.
+## 9. Guard Clauses / Early `return`
 
-## Running the Project
+Inside `calculation()`, the divide-by-zero check uses `return` to exit the function immediately once `"Error"` is displayed — preventing the rest of the function (which would otherwise overwrite the display or attempt an invalid calculation) from running. This is a cleaner alternative to wrapping the remaining code in an `else` block.
 
-Clone the repo and open `index.html` in any browser — no build step, no dependencies, no installation required.
+## 10. Function Composition
+
+`operator()` calls `calculation()` internally when a new operator is pressed while one is already pending. This is what makes chaining work (`4 + 5 × 2`) without duplicating the arithmetic logic inside `operator()` itself — one function delegates part of its job to another.
+
+## Bugs Encountered & Lessons Learned
+
+These recurred across both build attempts and are worth remembering:
+
+- **Forgetting to reset `operatorHolder` to `null` after a calculation** — caused chained operations after `=` to silently use stale state instead of the fresh result.
+- **Treating `=` the same as a new operator press** — reusing the operator-handling function for equals caused the "next digit" and "next chained operator" cases to conflict; equals needed its own function.
+- **Routing the `C` (clear) button through the same function as the operators** — caused clear to accidentally trigger a calculation instead of resetting immediately.
+- **Setting `display.textContent` a second time after an early `return`** — an "Error" message from divide-by-zero was being instantly overwritten by a later line in the calling function that unconditionally re-rendered the display.
+- **A boolean flag set but never checked** — declaring `equal` and updating it correctly, but forgetting to actually read it anywhere, meant it had zero effect on behavior despite looking correct.
+- 
