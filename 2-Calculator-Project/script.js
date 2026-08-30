@@ -1,157 +1,144 @@
-// ===== 1. GRAB ELEMENTS =====
-let display = document.getElementById("display");
-let btn0 = document.getElementById("btn0");
+
+let display = document.getElementById("input-section");
+
 let btn1 = document.getElementById("btn1");
 let btn2 = document.getElementById("btn2");
 let btn3 = document.getElementById("btn3");
 let btn4 = document.getElementById("btn4");
-let btn5 = document.getElementById("btn5");
+let btn5= document.getElementById("btn5");
 let btn6 = document.getElementById("btn6");
 let btn7 = document.getElementById("btn7");
 let btn8 = document.getElementById("btn8");
 let btn9 = document.getElementById("btn9");
-let btnAdd = document.getElementById("btnAdd");
-let btnMinus = document.getElementById("btnMinus");
-let btnMultiply = document.getElementById("btnMultiply");
-let btnDivide = document.getElementById("btnDivide");
-let btnEqual = document.getElementById("btnEqual");
-let btnClear = document.getElementById("btnClear");
+let btn0= document.getElementById("btn0");
+let btnC = document.getElementById("btn-c");
+let btnP = document.getElementById("btn-p");
+let btnM = document.getElementById("btn-m");
+let btnMu = document.getElementById("btn-mu");
+let btnD = document.getElementById("btn-d");
+let btnE = document.getElementById("btn-e");
+
+// source of truth:
 
 let currentValue = "0";
 let previousValue = null;
-let operator = null;
+let operatorHolder = null;
 let equal = false;
 
-function numbersHolder(number) {
+function numberHolder(num) {
     if (equal === true) {
         currentValue = "0";
         equal = false;
     }
-     if (currentValue === "0") {
-        currentValue = number;
+    if (currentValue === "0") {
+       currentValue = num;
     } else {
-        currentValue = currentValue + number;
+        currentValue = currentValue + num;
     }
-    display.textContent = currentValue;
+     display.textContent = currentValue;
 }
-function operatorsHolder(opr) {
-    if (operator !== null) {
-        colculation()
-    }
+
+function operator(opr) {
+    if (operatorHolder !== null) {
+        calculation()
+    } 
+        operatorHolder = opr;
         previousValue = currentValue;
-        operator = opr;
         currentValue = "0";
 }
 
-function colculation() {
-    
-        let current = Number(currentValue);
-        let previous = Number(previousValue);
-        let result;
-
-       if (operator === "p") {
-        result = previous + current;
-        let finalResult = String(result);
-        currentValue = finalResult
-    display.textContent = currentValue;
-        previousValue = "0";
-        operator = null; 
+function calculation() {
+    let P = Number(previousValue);
+    let C = Number(currentValue);
+   
+     if (operatorHolder === "p") {
+        currentValue = P + C;
+     }
+     else if (operatorHolder === "m") {
+        currentValue = P - C;
+     }
+     else if (operatorHolder === "d") {
+         if (currentValue === "0") {
+            display.textContent = "Error";
+            return;
+         } else {
+        currentValue = P / C;
        }
-    else if (operator === "m") {
-        result = previous - current;
-        let finalResult = String(result);
-        currentValue = finalResult
-    display.textContent = currentValue;
-        previousValue = "0";
-        operator = null; 
+     }
+     else if (operatorHolder === "mu") {
+        currentValue = P * C;
+     }
+     display.textContent = currentValue;
+     
+    currentValue = String(currentValue);
+    previousValue = "0";
+    operatorHolder = null;
     }
-    else if (operator === "mu") {
-      result = previous * current;
-    let finalResult = String(result);
-        currentValue = finalResult
+ function clear() {
+    currentValue = "0";
+    previousValue = null;
+    operatorHolder = null;
+    equal = null;
     display.textContent = currentValue;
-        previousValue = "0";
-        operator = null; 
-    }
-    else if (operator === "d") {
-      if (current === 0) {
-        display.textContent = "Error";
-        return;
-        } else {
-        result = previous / current;
-        let finalResult = String(result);
-        currentValue = finalResult
-    display.textContent = currentValue;
-        previousValue = "0";
-        operator = null; 
+    } 
+
+ function btnEqual() {
+    if (operatorHolder === "d") {
+        if (currentValue === "0") { 
+            display.textContent = "Error";
+            return;
         }
     }
-    
-}
-function btnC() {
-        currentValue = "0";
-      previousValue = null;
-      operator = null;
-      display.textContent = currentValue;
-      equal = false;
-}
- 
-function btnE() {
-    if (operator === "d") {
-    if (currentValue === "0") {
-        display.textContent = "Error";
-        return;
-    }
-}
-    colculation()
-      display.textContent = currentValue;
-      equal = true;
-}
+    calculation()
+    display.textContent = currentValue;
+    equal = true;
+ }
+
+btnP.addEventListener("click", () => {
+    operator("p")
+});
+btnD.addEventListener("click", () => {
+    operator("d")
+});
+btnM.addEventListener("click", () => {
+    operator("m")
+});
+btnMu.addEventListener("click", () => {
+    operator("mu")
+});
+btnC.addEventListener("click", () => {
+   clear()
+});
+btnE.addEventListener("click", () => {
+    btnEqual()
+});
 btn0.addEventListener("click", () => {
-    numbersHolder("0")
+    numberHolder("0")
 });
 btn1.addEventListener("click", () => {
-    numbersHolder("1")
+    numberHolder("1")
 });
 btn2.addEventListener("click", () => {
-    numbersHolder("2")
+    numberHolder("2")
 });
 btn3.addEventListener("click", () => {
-    numbersHolder("3")
+    numberHolder("3")
 });
 btn4.addEventListener("click", () => {
-    numbersHolder("4")
+    numberHolder("4")
 });
 btn5.addEventListener("click", () => {
-    numbersHolder("5")
+    numberHolder("5")
 });
 btn6.addEventListener("click", () => {
-    numbersHolder("6")
+    numberHolder("6")
 });
 btn7.addEventListener("click", () => {
-    numbersHolder("7")
+    numberHolder("7")
 });
 btn8.addEventListener("click", () => {
-    numbersHolder("8")
+    numberHolder("8")
 });
 btn9.addEventListener("click", () => {
-    numbersHolder("9")
-});
-btnAdd.addEventListener("click", () => {
-    operatorsHolder("p")
-});
-btnMinus.addEventListener("click", () => {
-    operatorsHolder("m")
-});
-btnMultiply.addEventListener("click", () => {
-    operatorsHolder("mu")
-});
-btnDivide.addEventListener("click", () => {
-    operatorsHolder("d")
-});
-btnEqual.addEventListener("click", () => {
-    btnE()
-});
-btnClear.addEventListener("click", () => {
-    btnC()
+    numberHolder("9")
 });
